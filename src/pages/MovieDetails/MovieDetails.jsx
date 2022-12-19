@@ -3,6 +3,7 @@ import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { getMovieDetails, getMovieImage } from 'services';
+import posterDefaultImage from 'images/posterDefaultImage.jpeg';
 
 // import avatarMovie from 'data/avatarMovie.json';
 // import catBallouMovie from 'data/catBallouMovie.json';
@@ -42,10 +43,13 @@ export default function MovieDetails() {
   const { poster_path, title, release_date, vote_average, overview, genres } =
     response;
 
+  const posterImage = poster_path
+    ? getMovieImage(poster_path)
+    : posterDefaultImage;
   return (
     <div>
       <Link to={backLocation}>Go back</Link>
-      <img src={getMovieImage(poster_path)} alt={title} />
+      <img src={posterImage} alt={title} />
       <h2>
         {title} ({release_date.split('-')[0]})
       </h2>

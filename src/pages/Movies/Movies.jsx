@@ -33,9 +33,20 @@ export default function Movies() {
     }
 
     searchMovie(searchQuery)
-      .then(setResponse)
-      .catch(error => toast.error(error.message));
-  }, [searchQuery]);
+      .then(resp => {
+        if (!resp.total_results) {
+          throw new Error(
+            'Sorry, there are no movies matching your search query. Please try again.'
+          );
+        }
+        setResponse(resp);
+      })
+      .catch(error => {
+        setSearchParams({});
+        setResponse(null);
+        toast.error(error.message);
+      });
+  }, [searchQuery, setSearchParams]);
 
   const getQuery = query => {
     setSearchParams(query ? { query } : {});

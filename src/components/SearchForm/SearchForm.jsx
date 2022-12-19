@@ -7,11 +7,13 @@ export default function SearchForm({ onSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    // if (!input) {
-    //   return;
-    // }
+    const query = input.trim().toLowerCase();
 
-    onSubmit(input);
+    if (!query) {
+      return;
+    }
+
+    onSubmit(query);
 
     setInput('');
   };

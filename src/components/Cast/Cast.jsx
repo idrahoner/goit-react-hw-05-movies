@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { getMovieCredits, getProfileImage } from 'services';
+import profileDefaultImage from 'images/profileDefaultImage.jpeg';
 
 // import avatarCredits from 'data/avatarCredits.json';
 // import catBallouCredits from 'data/catBallouCredits.json';
@@ -44,7 +45,14 @@ export default function Cast() {
         <ul>
           {response.cast.map(({ id, profile_path, name, character }) => (
             <li key={id}>
-              <img src={getProfileImage(profile_path)} alt={name} />
+              <img
+                src={
+                  profile_path
+                    ? getProfileImage(profile_path)
+                    : profileDefaultImage
+                }
+                alt={name}
+              />
               <p>{name}</p>
               <p>{character}</p>
             </li>
