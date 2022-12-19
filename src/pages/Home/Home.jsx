@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { Box } from 'components/Box';
+import { Title, ListItem, MovieLink } from './Home.styled';
 import { getTrendingMovies } from 'services';
-
-// import trendingMovies from 'data/trendingMovies.json';
 
 export default function Home() {
   const [response, setResponse] = useState(null);
@@ -16,25 +16,22 @@ export default function Home() {
       .catch(error => toast.error(error.message));
   }, []);
 
-  // useEffect(() => {
-  //   setResponse(trendingMovies);
-  // }, []);
-
   if (!response) {
     return null;
   }
 
   return (
-    <div>
+    <Box px={6} py={5} fontSize="l" as="main">
+      <Title>Trending today</Title>
       <ul>
         {response.results.map(({ id, title }) => (
-          <li key={id}>
-            <Link to={`/movies/${id}`} state={{ from: location }}>
+          <ListItem key={id}>
+            <MovieLink to={`/movies/${id}`} state={{ from: location }}>
               {title}
-            </Link>
-          </li>
+            </MovieLink>
+          </ListItem>
         ))}
       </ul>
-    </div>
+    </Box>
   );
 }

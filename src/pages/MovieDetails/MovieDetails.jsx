@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { HiArrowSmLeft } from 'react-icons/hi';
 
+import { Box } from 'components/Box';
+import {
+  BackLink,
+  DetailsLink,
+  Poster,
+  MovieName,
+  SubTitle,
+  Text,
+} from './MovieDetails.styled';
 import { getMovieDetails, getMovieImage } from 'services';
 import posterDefaultImage from 'images/posterDefaultImage.jpeg';
-
-// import avatarMovie from 'data/avatarMovie.json';
-// import catBallouMovie from 'data/catBallouMovie.json';
-// import catPackMovie from 'data/catPackMovie.json';
 
 export default function MovieDetails() {
   const [response, setResponse] = useState(null);
@@ -20,20 +26,6 @@ export default function MovieDetails() {
     getMovieDetails(movieId)
       .then(setResponse)
       .catch(error => toast.error(error.message));
-
-    // switch (movieId) {
-    //   case '76600':
-    //     setResponse(avatarMovie);
-    //     break;
-    //   case '11694':
-    //     setResponse(catBallouMovie);
-    //     break;
-    //   case '991833':
-    //     setResponse(catPackMovie);
-    //     break;
-    //   default:
-    //     toast.error('Something went wrong :(');
-    // }
   }, [movieId]);
 
   if (!response) {
@@ -47,24 +39,35 @@ export default function MovieDetails() {
     ? getMovieImage(poster_path)
     : posterDefaultImage;
   return (
-    <div>
-      <Link to={backLocation}>Go back</Link>
-      <img src={posterImage} alt={title} />
-      <h2>
-        {title} ({release_date.split('-')[0]})
-      </h2>
-      <p>User score: {vote_average}</p>
-      <h3>Overview</h3>
-      <p>{overview}</p>
-      <h3>Genres</h3>
-      <p>{genres.map(({ name }) => name).join(' ')}</p>
-      <Link to="cast" state={{ from: backLocation }}>
-        Cast
-      </Link>
-      <Link to="reviews" state={{ from: backLocation }}>
-        Reviews
-      </Link>
-      <Outlet />
-    </div>
+    <Box px={6} py={5} fontSize="l" as="main">
+      <BackLink to={backLocation}>
+        <HiArrowSmLeft />
+        Go back
+      </BackLink>
+      <Box py={5} mb={5} display="flex" as="section">
+        <Poster src={posterImage} alt={title} />
+        <Box>
+          <MovieName>
+            {title} ({release_date.split('-')[0]})
+          </MovieName>
+          <Text>User score: {vote_average}</Text>
+          <SubTitle>Overview</SubTitle>
+          <Text>{overview}</Text>
+          <SubTitle>Genres</SubTitle>
+          <Text>{genres.map(({ name }) => name).join(', ')}</Text>
+        </Box>
+      </Box>
+      <Box display="flex">
+        <DetailsLink to="cast" state={{ from: backLocation }}>
+          Cast
+        </DetailsLink>
+        <DetailsLink to="reviews" state={{ from: backLocation }}>
+          Reviews
+        </DetailsLink>
+      </Box>
+      <Box py={5} as="section">
+        <Outlet />
+      </Box>
+    </Box>
   );
 }

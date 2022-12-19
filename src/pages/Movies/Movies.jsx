@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link, useLocation } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import SearchForm from 'components/SearchForm';
 import { searchMovie } from 'services';
-
-// import searchCat from 'data/searchCat.json';
+import { ListItem, MovieLink } from './Movies.styled';
+import { Box } from 'components/Box';
 
 export default function Movies() {
   const [response, setResponse] = useState(null);
@@ -13,19 +13,6 @@ export default function Movies() {
   const location = useLocation();
 
   const searchQuery = searchParams.get('query');
-
-  // useEffect(() => {
-  //   if (!searchQuery) {
-  //     return;
-  //   }
-
-  //   if (searchQuery === 'cat') {
-  //     setResponse(searchCat);
-  //   } else {
-  //     setResponse(null);
-  //     toast.error(`There are no movie with the name ${searchQuery}`);
-  //   }
-  // }, [searchQuery]);
 
   useEffect(() => {
     if (!searchQuery) {
@@ -53,19 +40,19 @@ export default function Movies() {
   };
 
   return (
-    <div>
+    <Box px={6} py={5} fontSize="l" as="main">
       <SearchForm onSubmit={getQuery} />
       {response && (
         <ul>
           {response.results.map(({ id, title }) => (
-            <li key={id}>
-              <Link to={`${id}`} state={{ from: location }}>
+            <ListItem key={id}>
+              <MovieLink to={`${id}`} state={{ from: location }}>
                 {title}
-              </Link>
-            </li>
+              </MovieLink>
+            </ListItem>
           ))}
         </ul>
       )}
-    </div>
+    </Box>
   );
 }
