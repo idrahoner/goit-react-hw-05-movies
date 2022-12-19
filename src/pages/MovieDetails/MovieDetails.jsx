@@ -15,9 +15,6 @@ export default function MovieDetails() {
   const location = useLocation();
   const backLocation = location.state?.from || '/';
 
-  console.log('location : ', location);
-  console.log('backLocation: ', backLocation);
-
   useEffect(() => {
     getMovieDetails(movieId)
       .then(setResponse)
@@ -57,10 +54,10 @@ export default function MovieDetails() {
       <p>{overview}</p>
       <h3>Genres</h3>
       <p>{genres.map(({ name }) => name).join(' ')}</p>
-      <Link to="cast" state={{ from: location }}>
+      <Link to="cast" state={{ from: backLocation }}>
         Cast
       </Link>
-      <Link to="reviews" state={{ from: location }}>
+      <Link to="reviews" state={{ from: backLocation }}>
         Reviews
       </Link>
       <Outlet />
