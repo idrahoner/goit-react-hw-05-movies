@@ -1,14 +1,35 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { getMovieCredits, getProfileImage } from 'services';
+
+// import avatarCredits from 'data/avatarCredits.json';
+// import catBallouCredits from 'data/catBallouCredits.json';
+// import catPackCredits from 'data/catPackCredits.json';
 
 export default function Cast() {
   const [response, setResponse] = useState(null);
   const { movieId } = useParams();
 
   useEffect(() => {
-    getMovieCredits(movieId).then(setResponse);
+    getMovieCredits(movieId)
+      .then(setResponse)
+      .catch(error => toast.error(error.message));
+
+    // switch (movieId) {
+    //   case '76600':
+    //     setResponse(avatarCredits);
+    //     break;
+    //   case '11694':
+    //     setResponse(catBallouCredits);
+    //     break;
+    //   case '991833':
+    //     setResponse(catPackCredits);
+    //     break;
+    //   default:
+    //     toast.error('Something went wrong :(');
+    // }
   }, [movieId]);
 
   if (!response) {

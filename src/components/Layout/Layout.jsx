@@ -1,4 +1,6 @@
+import { Suspense } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import Loader from 'components/Loader';
 
 export default function Layout() {
   return (
@@ -7,7 +9,9 @@ export default function Layout() {
         <Link to="/">Home</Link>
         <Link to="/movies">Movies</Link>
       </div>
-      <Outlet />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 }

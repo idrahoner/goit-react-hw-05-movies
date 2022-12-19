@@ -28,7 +28,6 @@ export const searchMovie = async query => {
 
 export const getMovieDetails = async (id, detail = '') => {
   const url = BASE_URL + '/movie/' + id + detail;
-  console.log(url);
   const { data } = await axios.get(url, {
     params: {
       api_key: API_KEY,

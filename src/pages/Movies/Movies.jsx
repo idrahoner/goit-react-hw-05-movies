@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import SearchForm from 'components/SearchForm';
@@ -10,6 +10,7 @@ import { searchMovie } from 'services';
 export default function Movies() {
   const [response, setResponse] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
   const searchQuery = searchParams.get('query');
 
@@ -18,7 +19,12 @@ export default function Movies() {
   //     return;
   //   }
 
-  //   setResponse(searchCat);
+  //   if (searchQuery === 'cat') {
+  //     setResponse(searchCat);
+  //   } else {
+  //     setResponse(null);
+  //     toast.error(`There are no movie with the name ${searchQuery}`);
+  //   }
   // }, [searchQuery]);
 
   useEffect(() => {
@@ -42,7 +48,9 @@ export default function Movies() {
         <ul>
           {response.results.map(({ id, title }) => (
             <li key={id}>
-              <Link to={`${id}`}>{title}</Link>
+              <Link to={`${id}`} state={{ from: location }}>
+                {title}
+              </Link>
             </li>
           ))}
         </ul>
